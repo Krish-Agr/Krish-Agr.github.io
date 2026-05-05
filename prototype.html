@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prototype Showcase — KYC Agentic AI Product</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0F172A;--navy2:#1E293B;--navy3:#334155;
+  --purple:#6366F1;--purple2:#818CF8;--purple3:#EEF2FF;
+  --teal:#0D9488;--teal2:#CCFBF1;
+  --gold:#D97706;--gold2:#FEF3C7;
+  --green:#16A34A;--green2:#DCFCE7;
+  --red:#DC2626;--red2:#FEE2E2;
+  --bg:#F1F5F9;--white:#FFFFFF;
+  --text:#0F172A;--text2:#475569;--text3:#94A3B8;
+  --border:#E2E8F0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:13px;}
+
+/* WRAPPER */
+.showcase{max-width:1100px;margin:0 auto;padding:32px 24px;}
+.showcase-header{text-align:center;margin-bottom:40px;}
+.showcase-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;color:var(--purple);text-transform:uppercase;margin-bottom:10px;}
+.showcase-title{font-size:28px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.showcase-sub{color:var(--text2);font-size:14px;max-width:600px;margin:0 auto 20px;}
+.showcase-meta{display:inline-flex;gap:12px;}
+.s-chip{background:var(--navy2);color:var(--text3);font-size:10px;padding:4px 12px;border-radius:20px;font-family:'JetBrains Mono',monospace;}
+
+/* PROTOTYPE TABS */
+.tab-bar{display:flex;gap:4px;background:var(--navy2);padding:6px;border-radius:10px;margin-bottom:24px;}
+.tab{padding:8px 18px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:500;color:var(--text3);transition:all 0.2s;}
+.tab.active{background:var(--purple);color:white;}
+.tab:hover:not(.active){background:var(--navy3);color:var(--text2);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* ─── SCREEN 1: ANALYST QUEUE ─────────────────────────────────────────── */
+.app-shell{background:var(--navy);border-radius:14px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.app-topbar{background:var(--navy2);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--navy3);}
+.app-logo{font-weight:700;font-size:14px;color:white;display:flex;align-items:center;gap:8px;}
+.app-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--purple2);}
+.app-nav{display:flex;gap:20px;}
+.app-nav a{font-size:11px;color:var(--text3);text-decoration:none;padding:4px 0;}
+.app-nav a.active{color:white;border-bottom:1px solid var(--purple2);}
+.app-user{display:flex;align-items:center;gap:8px;}
+.app-avatar{width:28px;height:28px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;}
+.app-username{font-size:11px;color:var(--text3);}
+
+.app-body{display:grid;grid-template-columns:240px 1fr;min-height:520px;}
+.app-sidebar{background:var(--navy2);padding:16px 0;border-right:1px solid var(--navy3);}
+.sidebar-section{padding:0 14px;margin-bottom:20px;}
+.sidebar-label{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;font-family:'JetBrains Mono',monospace;}
+.sidebar-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:7px;cursor:pointer;margin-bottom:2px;transition:background 0.15s;}
+.sidebar-item:hover{background:var(--navy3);}
+.sidebar-item.active{background:rgba(99,102,241,0.2);}
+.sidebar-item-label{font-size:11.5px;color:var(--text3);}
+.sidebar-item.active .sidebar-item-label{color:white;}
+.sidebar-badge{font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;}
+.badge-urgent{background:rgba(220,38,38,0.2);color:#FCA5A5;}
+.badge-count{background:var(--navy3);color:var(--text3);}
+.badge-purple{background:rgba(99,102,241,0.25);color:var(--purple2);}
+
+.app-main{padding:18px 20px;background:var(--navy);}
+.queue-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.queue-title{font-size:14px;font-weight:600;color:white;}
+.queue-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.queue-filters{display:flex;gap:8px;}
+.filter-chip{background:var(--navy2);border:1px solid var(--navy3);color:var(--text3);font-size:10px;padding:4px 10px;border-radius:6px;cursor:pointer;}
+.filter-chip.active{background:rgba(99,102,241,0.2);border-color:var(--purple);color:var(--purple2);}
+
+/* Queue rows */
+.queue-table{width:100%;border-collapse:collapse;}
+.queue-table th{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);padding:6px 12px;text-align:left;border-bottom:1px solid var(--navy3);font-family:'JetBrains Mono',monospace;}
+.queue-row{border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:background 0.15s;}
+.queue-row:hover{background:rgba(255,255,255,0.03);}
+.queue-row.selected{background:rgba(99,102,241,0.12);}
+.queue-td{padding:10px 12px;vertical-align:middle;}
+.app-id{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--purple2);font-weight:500;}
+.applicant-name{font-size:12px;font-weight:500;color:white;}
+.applicant-type{font-size:10px;color:var(--text3);}
+.esc-reason{font-size:10.5px;color:var(--text2);}
+.conf-bar{height:4px;border-radius:2px;background:var(--navy3);width:80px;overflow:hidden;margin-top:3px;}
+.conf-fill{height:100%;border-radius:2px;}
+.risk-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;}
+.risk-high{background:rgba(220,38,38,0.15);color:#FCA5A5;border:1px solid rgba(220,38,38,0.3);}
+.risk-amber{background:rgba(217,119,6,0.15);color:#FCD34D;border:1px solid rgba(217,119,6,0.3);}
+.risk-low{background:rgba(13,148,136,0.15);color:var(--teal2);border:1px solid rgba(13,148,136,0.3);}
+.time-ago{font-size:10px;color:var(--text3);}
+
+/* DETAIL PANEL (right) */
+.detail-panel{background:var(--navy2);border-radius:10px;margin-top:14px;overflow:hidden;}
+.detail-header{background:var(--navy3);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
+.detail-title{font-size:13px;font-weight:600;color:white;}
+.detail-id{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--purple2);}
+.detail-body{padding:16px 18px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.detail-section{background:var(--navy);border-radius:8px;padding:12px 14px;}
+.detail-sec-title{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;font-family:'JetBrains Mono',monospace;}
+.detail-row{display:flex;justify-content:space-between;margin-bottom:6px;align-items:center;}
+.detail-key{font-size:10.5px;color:var(--text3);}
+.detail-val{font-size:10.5px;color:white;font-weight:500;}
+.conf-indicator{display:flex;align-items:center;gap:6px;}
+.conf-dot{width:7px;height:7px;border-radius:50%;}
+.dot-green{background:var(--green);}
+.dot-amber{background:var(--gold2);}
+.dot-red{background:#FCA5A5;}
+.agent-score{font-size:16px;font-weight:700;color:var(--purple2);}
+.esc-reason-block{background:rgba(217,119,6,0.1);border:1px solid rgba(217,119,6,0.25);border-radius:6px;padding:10px 12px;}
+.esc-label{font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold2);margin-bottom:4px;font-family:'JetBrains Mono',monospace;}
+.esc-text{font-size:11px;color:#FCD34D;line-height:1.5;}
+.action-bar{padding:12px 18px;background:rgba(99,102,241,0.08);border-top:1px solid var(--navy3);display:flex;gap:10px;align-items:center;}
+.btn-approve{background:var(--green);color:white;border:none;padding:7px 18px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-reject{background:var(--red);color:white;border:none;padding:7px 18px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-escalate{background:transparent;color:var(--gold2);border:1px solid rgba(217,119,6,0.4);padding:7px 18px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-note{background:transparent;color:var(--text3);border:1px solid var(--navy3);padding:7px 14px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;}
+.action-timer{margin-left:auto;font-size:11px;color:var(--text3);}
+
+/* ─── SCREEN 2: PERFORMANCE DASHBOARD ─────────────────────────────────── */
+.dashboard-body{background:var(--navy);border-radius:14px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.db-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.db-title{font-size:16px;font-weight:700;color:white;}
+.db-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.db-date{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+.kpi-card{background:var(--navy2);border-radius:10px;padding:14px 16px;border:1px solid var(--navy3);}
+.kpi-label{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;font-family:'JetBrains Mono',monospace;}
+.kpi-val{font-size:24px;font-weight:700;line-height:1;margin-bottom:4px;}
+.kpi-val.purple{color:var(--purple2);}
+.kpi-val.teal{color:var(--teal2);}
+.kpi-val.green{color:#86EFAC;}
+.kpi-val.gold{color:#FCD34D;}
+.kpi-trend{font-size:10px;color:var(--text3);}
+.kpi-trend.up{color:#86EFAC;}
+.kpi-trend.warn{color:#FCD34D;}
+
+.charts-row{display:grid;grid-template-columns:1.4fr 1fr;gap:10px;margin-bottom:16px;}
+.chart-card{background:var(--navy2);border-radius:10px;padding:14px 16px;border:1px solid var(--navy3);}
+.chart-title{font-size:11px;font-weight:600;color:white;margin-bottom:12px;}
+
+/* Fake bar chart */
+.bar-chart{display:flex;align-items:flex-end;gap:8px;height:100px;}
+.bar-group{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
+.bar{border-radius:3px 3px 0 0;width:100%;transition:opacity 0.2s;}
+.bar:hover{opacity:0.8;}
+.bar-label{font-size:9px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+
+/* Fake donut / pie */
+.donut-wrap{display:flex;align-items:center;gap:16px;}
+.donut-svg{flex-shrink:0;}
+.donut-legend{display:flex;flex-direction:column;gap:6px;}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--text2);}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+.agents-table{width:100%;}
+.agents-table th{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);padding:5px 8px;text-align:left;border-bottom:1px solid var(--navy3);}
+.agents-table td{padding:8px 8px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:11px;color:var(--text2);}
+.agent-name-cell{color:white;font-weight:500;}
+.mini-bar{height:5px;background:var(--navy3);border-radius:3px;overflow:hidden;width:80px;}
+.mini-fill{height:100%;background:linear-gradient(to right,var(--purple),var(--purple2));border-radius:3px;}
+
+/* ─── SCREEN 3: AI REASONING TRACE ─────────────────────────────────────── */
+.trace-shell{background:var(--navy);border-radius:14px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.trace-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.trace-title{font-size:15px;font-weight:700;color:white;}
+.trace-id{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--purple2);background:rgba(99,102,241,0.15);padding:4px 12px;border-radius:6px;}
+
+.trace-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.trace-agent{background:var(--navy2);border-radius:10px;overflow:hidden;border:1px solid var(--navy3);}
+.trace-agent-header{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;}
+.trace-agent-name{font-size:12px;font-weight:600;color:white;display:flex;align-items:center;gap:8px;}
+.trace-status-dot{width:7px;height:7px;border-radius:50%;}
+.dot-complete{background:var(--green);}
+.dot-escalated{background:var(--gold2);}
+.trace-score{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--purple2);}
+.trace-score.warn{color:#FCD34D;}
+.trace-body{padding:12px 14px;border-top:1px solid var(--navy3);}
+.trace-line{margin-bottom:8px;}
+.trace-key{font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:2px;font-family:'JetBrains Mono',monospace;}
+.trace-val{font-size:11px;color:var(--text2);line-height:1.5;}
+.trace-reasoning{background:var(--navy);border-radius:6px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#86EFAC;line-height:1.7;margin-top:4px;}
+.trace-comment{font-style:italic;color:var(--text3);}
+
+.trace-decision{background:rgba(217,119,6,0.1);border:1px solid rgba(217,119,6,0.3);border-radius:10px;padding:14px 18px;margin-top:14px;}
+.trace-decision-label{font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold2);margin-bottom:6px;font-family:'JetBrains Mono',monospace;}
+.trace-decision-text{font-size:12px;color:#FCD34D;line-height:1.6;}
+
+/* ANNOTATION LAYER */
+.annotation{position:relative;}
+.ann-badge{position:absolute;background:var(--purple);color:white;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.ann-tooltip{position:absolute;background:var(--navy2);border:1px solid var(--purple);border-radius:8px;padding:10px 14px;font-size:11px;color:var(--text2);width:220px;z-index:10;box-shadow:0 8px 24px rgba(0,0,0,0.3);line-height:1.5;}
+
+/* BOTTOM CAPTION */
+.caption-bar{background:var(--navy2);border-radius:10px;padding:14px 20px;margin-top:20px;display:flex;justify-content:space-between;align-items:center;}
+.caption-text{font-size:12px;color:var(--text2);max-width:700px;line-height:1.5;}
+.caption-text strong{color:white;}
+.caption-tools{display:flex;gap:8px;flex-wrap:wrap;}
+.tool-tag{background:var(--navy3);color:var(--text3);font-size:10px;padding:3px 10px;border-radius:4px;font-family:'JetBrains Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="showcase">
+
+  <div class="showcase-header">
+    <div class="showcase-eyebrow">Portfolio — Prototype Showcase</div>
+    <h1 class="showcase-title">KYC Agentic AI — UI Prototypes</h1>
+    <p class="showcase-sub">Three key screens from the analyst-facing product, designed in Figma and built to demonstrate product thinking, UX rationale, and agentic AI system design.</p>
+    <div class="showcase-meta">
+      <span class="s-chip">Figma → HTML prototype</span>
+      <span class="s-chip">Krishna Agrawal · PwC NL</span>
+      <span class="s-chip">2024</span>
+    </div>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab(0)">1 · Analyst Review Queue</div>
+    <div class="tab" onclick="switchTab(1)">2 · Performance Dashboard</div>
+    <div class="tab" onclick="switchTab(2)">3 · AI Reasoning Trace</div>
+  </div>
+
+  <!-- ─── TAB 1: QUEUE ───────────────────────────────────────────────────── -->
+  <div class="tab-content active" id="tab-0">
+    <div class="app-shell">
+      <!-- Topbar -->
+      <div class="app-topbar">
+        <div class="app-logo"><div class="app-logo-dot"></div> KYC Agent</div>
+        <div class="app-nav">
+          <a href="#">Dashboard</a>
+          <a href="#" class="active">Review Queue</a>
+          <a href="#">Applications</a>
+          <a href="#">Audit Logs</a>
+          <a href="#">Settings</a>
+        </div>
+        <div class="app-user">
+          <div class="app-avatar">MA</div>
+          <div class="app-username">Maria A. · KYC Analyst</div>
+        </div>
+      </div>
+      <!-- Body -->
+      <div class="app-body">
+        <!-- Sidebar -->
+        <div class="app-sidebar">
+          <div class="sidebar-section">
+            <div class="sidebar-label">My Queue</div>
+            <div class="sidebar-item active">
+              <span class="sidebar-item-label">Pending Review</span>
+              <span class="sidebar-badge badge-urgent">12</span>
+            </div>
+            <div class="sidebar-item">
+              <span class="sidebar-item-label">Reviewed Today</span>
+              <span class="sidebar-badge badge-count">38</span>
+            </div>
+            <div class="sidebar-item">
+              <span class="sidebar-item-label">Overridden</span>
+              <span class="sidebar-badge badge-count">3</span>
+            </div>
+          </div>
+          <div class="sidebar-section">
+            <div class="sidebar-label">Team Queue</div>
+            <div class="sidebar-item">
+              <span class="sidebar-item-label">All Escalations</span>
+              <span class="sidebar-badge badge-purple">47</span>
+            </div>
+            <div class="sidebar-item">
+              <span class="sidebar-item-label">High Risk</span>
+              <span class="sidebar-badge badge-urgent">8</span>
+            </div>
+            <div class="sidebar-item">
+              <span class="sidebar-item-label">Compliance Hold</span>
+              <span class="sidebar-badge badge-count">5</span>
+            </div>
+          </div>
+          <div class="sidebar-section">
+            <div class="sidebar-label">Today's Stats</div>
+            <div style="padding:10px;background:rgba(99,102,241,0.08);border-radius:8px;border:1px solid rgba(99,102,241,0.2);">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:10px;color:var(--text3);">Auto-approved</span><span style="font-size:10px;color:#86EFAC;font-weight:600;">1,847</span></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:10px;color:var(--text3);">Escalated</span><span style="font-size:10px;color:#FCD34D;font-weight:600;">312</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="font-size:10px;color:var(--text3);">Esc. rate</span><span style="font-size:10px;color:var(--purple2);font-weight:600;">14.4%</span></div>
+            </div>
+          </div>
+        </div>
+        <!-- Main -->
+        <div class="app-main">
+          <div class="queue-header">
+            <div><div class="queue-title">Pending Review — My Queue</div><div class="queue-sub">12 applications awaiting review · Sorted by risk score</div></div>
+            <div class="queue-filters">
+              <div class="filter-chip active">All</div>
+              <div class="filter-chip">High Risk</div>
+              <div class="filter-chip">PEP Match</div>
+              <div class="filter-chip">Doc Issues</div>
+            </div>
+          </div>
+          <table class="queue-table">
+            <thead><tr>
+              <th>App ID</th><th>Applicant</th><th>Escalation Reason</th><th>Agent Confidence</th><th>Risk</th><th>Time</th>
+            </tr></thead>
+            <tbody>
+              <tr class="queue-row selected">
+                <td class="queue-td"><span class="app-id">KYC-28741</span></td>
+                <td class="queue-td"><div class="applicant-name">Jan de Vries</div><div class="applicant-type">Personal · NL</div></td>
+                <td class="queue-td"><span class="esc-reason">PEP match — confidence 0.61 (threshold 0.80)</span></td>
+                <td class="queue-td">
+                  <div style="font-size:11px;color:var(--purple2);font-weight:600;">0.61</div>
+                  <div class="conf-bar"><div class="conf-fill" style="width:61%;background:#FCD34D;"></div></div>
+                </td>
+                <td class="queue-td"><span class="risk-badge risk-amber">AMBER</span></td>
+                <td class="queue-td"><span class="time-ago">8 min ago</span></td>
+              </tr>
+              <tr class="queue-row">
+                <td class="queue-td"><span class="app-id">KYC-28739</span></td>
+                <td class="queue-td"><div class="applicant-name">Sophie Müller</div><div class="applicant-type">Personal · DE</div></td>
+                <td class="queue-td"><span class="esc-reason">Document extraction confidence 0.73 — Address field unclear</span></td>
+                <td class="queue-td">
+                  <div style="font-size:11px;color:var(--purple2);font-weight:600;">0.73</div>
+                  <div class="conf-bar"><div class="conf-fill" style="width:73%;background:var(--purple2);"></div></div>
+                </td>
+                <td class="queue-td"><span class="risk-badge risk-low">LOW</span></td>
+                <td class="queue-td"><span class="time-ago">12 min ago</span></td>
+              </tr>
+              <tr class="queue-row">
+                <td class="queue-td"><span class="app-id">KYC-28736</span></td>
+                <td class="queue-td"><div class="applicant-name">Andrei Popescu</div><div class="applicant-type">Personal · RO</div></td>
+                <td class="queue-td"><span class="esc-reason">AML risk score 0.68 — Country of origin flag</span></td>
+                <td class="queue-td">
+                  <div style="font-size:11px;color:var(--purple2);font-weight:600;">0.68</div>
+                  <div class="conf-bar"><div class="conf-fill" style="width:68%;background:#FCA5A5;"></div></div>
+                </td>
+                <td class="queue-td"><span class="risk-badge risk-high">HIGH</span></td>
+                <td class="queue-td"><span class="time-ago">19 min ago</span></td>
+              </tr>
+              <tr class="queue-row">
+                <td class="queue-td"><span class="app-id">KYC-28731</span></td>
+                <td class="queue-td"><div class="applicant-name">Elena Bergman</div><div class="applicant-type">Personal · SE</div></td>
+                <td class="queue-td"><span class="esc-reason">ID expiry in 22 days — below 30-day threshold</span></td>
+                <td class="queue-td">
+                  <div style="font-size:11px;color:var(--purple2);font-weight:600;">0.91</div>
+                  <div class="conf-bar"><div class="conf-fill" style="width:91%;background:#86EFAC;"></div></div>
+                </td>
+                <td class="queue-td"><span class="risk-badge risk-low">LOW</span></td>
+                <td class="queue-td"><span class="time-ago">34 min ago</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Detail panel for selected row -->
+          <div class="detail-panel">
+            <div class="detail-header">
+              <div class="detail-title">Application Detail — Jan de Vries</div>
+              <div class="detail-id">KYC-28741 · Escalated 8 min ago</div>
+            </div>
+            <div class="detail-body">
+              <div class="detail-section">
+                <div class="detail-sec-title">Applicant Information</div>
+                <div class="detail-row"><span class="detail-key">Full Name</span><span class="detail-val">Jan de Vries</span></div>
+                <div class="detail-row"><span class="detail-key">DOB</span><span class="detail-val">14 Mar 1971</span></div>
+                <div class="detail-row"><span class="detail-key">Nationality</span><span class="detail-val">Netherlands</span></div>
+                <div class="detail-row"><span class="detail-key">Document</span><span class="detail-val">Passport NL · Exp 2027</span></div>
+                <div class="detail-row"><span class="detail-key">Product</span><span class="detail-val">Business Current Acct</span></div>
+                <div class="detail-row"><span class="detail-key">Risk Profile</span><span class="detail-val" style="color:#FCD34D;">Amber — Elevated</span></div>
+              </div>
+              <div class="detail-section">
+                <div class="detail-sec-title">Agent Scores</div>
+                <div class="detail-row"><span class="detail-key">Doc Extraction</span><div class="conf-indicator"><div class="conf-dot dot-green"></div><span class="detail-val">0.94 ✓</span></div></div>
+                <div class="detail-row"><span class="detail-key">Identity Verif.</span><div class="conf-indicator"><div class="conf-dot dot-green"></div><span class="detail-val">0.91 ✓</span></div></div>
+                <div class="detail-row"><span class="detail-key">AML Risk Score</span><div class="conf-indicator"><div class="conf-dot dot-amber"></div><span class="detail-val" style="color:#FCD34D;">0.61 ⚠</span></div></div>
+                <div class="detail-row"><span class="detail-key">PEP Match</span><div class="conf-indicator"><div class="conf-dot dot-amber"></div><span class="detail-val" style="color:#FCD34D;">Possible — 0.61</span></div></div>
+                <div style="margin-top:10px;padding:10px;background:var(--navy);border-radius:6px;">
+                  <div style="font-size:9px;color:var(--text3);margin-bottom:4px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.1em;">Overall Confidence</div>
+                  <div style="font-size:22px;font-weight:700;color:#FCD34D;">0.61</div>
+                  <div style="font-size:10px;color:var(--text3);">Threshold for auto-approve: 0.80</div>
+                </div>
+              </div>
+              <div class="detail-section">
+                <div class="detail-sec-title">Escalation Reason</div>
+                <div class="esc-reason-block">
+                  <div class="esc-label">⚠ Escalation Flag</div>
+                  <div class="esc-text">Possible PEP match detected. Name similarity 0.61 with Jan de Vries (retired municipal official, Rotterdam, 2009–2015). Confidence below auto-approve threshold of 0.80. AML Agent recommends analyst verification of identity against PEP register entry.</div>
+                </div>
+              </div>
+            </div>
+            <div class="action-bar">
+              <button class="btn-approve">Approve — Not PEP</button>
+              <button class="btn-reject">Reject</button>
+              <button class="btn-escalate">Escalate to Compliance</button>
+              <button class="btn-note">Add Note</button>
+              <span class="action-timer">⏱ Avg review time: 6.2 min</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="caption-bar">
+      <div class="caption-text"><strong>Design rationale:</strong> Every escalated case surfaces a structured reason, the specific confidence score that triggered escalation, and the agent's reasoning — so analysts make a fast, defensible decision without starting from scratch. Average analyst review time fell from 18 min to 6.2 min after this UI was introduced.</div>
+      <div class="caption-tools"><span class="tool-tag">Figma</span><span class="tool-tag">LangGraph</span><span class="tool-tag">LangSmith</span></div>
+    </div>
+  </div>
+
+  <!-- ─── TAB 2: DASHBOARD ───────────────────────────────────────────────── -->
+  <div class="tab-content" id="tab-1">
+    <div class="dashboard-body">
+      <div class="db-header">
+        <div><div class="db-title">KYC Agent — Performance Dashboard</div><div class="db-sub">Live metrics · Production pilot · Updated 2 min ago</div></div>
+        <div class="db-date">07 Jun 2024 · 14:32 CET</div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-label">Today's Volume</div><div class="kpi-val purple">2,241</div><div class="kpi-trend up">↑ 19% vs yesterday</div></div>
+        <div class="kpi-card"><div class="kpi-label">Escalation Rate</div><div class="kpi-val teal">15.0%</div><div class="kpi-trend up">↓ 0.9pp this week · Target: 15–18%</div></div>
+        <div class="kpi-card"><div class="kpi-label">Avg Latency (p95)</div><div class="kpi-val gold">79s</div><div class="kpi-trend up">↓ 9s vs last week · Target: ≤90s</div></div>
+        <div class="kpi-card"><div class="kpi-label">System Uptime</div><div class="kpi-val green">99.9%</div><div class="kpi-trend up">No incidents this week</div></div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-title">Escalation Rate — 8-Week Trend (%)</div>
+          <div class="bar-chart">
+            <div class="bar-group"><div class="bar" style="height:78%;background:var(--purple);opacity:0.5;"></div><div class="bar-label">W1</div></div>
+            <div class="bar-group"><div class="bar" style="height:71%;background:var(--purple);opacity:0.6;"></div><div class="bar-label">W2</div></div>
+            <div class="bar-group"><div class="bar" style="height:66%;background:var(--purple);opacity:0.7;"></div><div class="bar-label">W3</div></div>
+            <div class="bar-group"><div class="bar" style="height:60%;background:var(--purple);opacity:0.8;"></div><div class="bar-label">W4</div></div>
+            <div class="bar-group"><div class="bar" style="height:61%;background:var(--purple);opacity:0.85;"></div><div class="bar-label">W5</div></div>
+            <div class="bar-group"><div class="bar" style="height:60%;background:var(--purple);;"></div><div class="bar-label">W6</div></div>
+            <div class="bar-group"><div class="bar" style="height:64%;background:var(--purple);"></div><div class="bar-label">W7</div></div>
+            <div class="bar-group"><div class="bar" style="height:66%;background:var(--purple);"></div><div class="bar-label">W8</div></div>
+          </div>
+          <div style="font-size:9px;color:var(--text3);margin-top:6px;">19.5% → 15.0% over pilot period · Target band: 15–18%</div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Escalation Reasons Breakdown</div>
+          <div class="donut-wrap">
+            <svg class="donut-svg" width="90" height="90" viewBox="0 0 90 90">
+              <circle cx="45" cy="45" r="30" fill="none" stroke="#1E293B" stroke-width="18"/>
+              <circle cx="45" cy="45" r="30" fill="none" stroke="#6366F1" stroke-width="18" stroke-dasharray="56.5 132.2" stroke-dashoffset="0" transform="rotate(-90 45 45)"/>
+              <circle cx="45" cy="45" r="30" fill="none" stroke="#0D9488" stroke-width="18" stroke-dasharray="25.3 163.4" stroke-dashoffset="-56.5" transform="rotate(-90 45 45)"/>
+              <circle cx="45" cy="45" r="30" fill="none" stroke="#D97706" stroke-width="18" stroke-dasharray="22.9 165.8" stroke-dashoffset="-81.8" transform="rotate(-90 45 45)"/>
+              <circle cx="45" cy="45" r="30" fill="none" stroke="#334155" stroke-width="18" stroke-dasharray="34.4 154.3" stroke-dashoffset="-104.7" transform="rotate(-90 45 45)"/>
+              <text x="45" y="49" text-anchor="middle" fill="white" font-size="11" font-family="Inter" font-weight="700">100%</text>
+            </svg>
+            <div class="donut-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--purple);"></div>Doc confidence (30%)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--teal);"></div>ID verification (19%)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--gold2);"></div>AML amber (17%)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--navy3);"></div>Other (34%)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Agent Performance — Live</div>
+        <table class="agents-table">
+          <thead><tr><th>Agent</th><th>Avg Confidence</th><th>Latency p95</th><th>Accuracy</th><th>Escalation Triggers</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="agent-name-cell">Agent 1 — Document Ingestion</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="mini-bar"><div class="mini-fill" style="width:94%;"></div></div><span style="color:#86EFAC;font-weight:600;">0.94</span></div></td><td>6.2s</td><td>97.3%</td><td>4.1%</td><td><span style="color:#86EFAC;font-size:11px;">● Healthy</span></td></tr>
+            <tr><td class="agent-name-cell">Agent 2 — Identity Verification</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="mini-bar"><div class="mini-fill" style="width:91%;"></div></div><span style="color:#86EFAC;font-weight:600;">0.91</span></div></td><td>8.7s</td><td>96.1%</td><td>5.8%</td><td><span style="color:#86EFAC;font-size:11px;">● Healthy</span></td></tr>
+            <tr><td class="agent-name-cell">Agent 3 — AML / Risk Scoring</td><td><div style="display:flex;align-items:center;gap:8px;"><div class="mini-bar"><div class="mini-fill" style="width:88%;"></div></div><span style="color:#FCD34D;font-weight:600;">0.88</span></div></td><td>18.3s</td><td>95.4%</td><td>6.2%</td><td><span style="color:#FCD34D;font-size:11px;">● Monitor</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="caption-bar">
+      <div class="caption-text"><strong>Design rationale:</strong> Compliance leads need to detect model drift before it causes regulatory exposure. This dashboard surfaces leading indicators — confidence distribution trends, per-agent health, escalation rate trajectory — not lagging outcomes. The "Monitor" status on Agent 3 triggers a Slack alert to the PM and compliance lead.</div>
+      <div class="caption-tools"><span class="tool-tag">LangSmith</span><span class="tool-tag">Figma</span><span class="tool-tag">Productboard</span></div>
+    </div>
+  </div>
+
+  <!-- ─── TAB 3: REASONING TRACE ─────────────────────────────────────────── -->
+  <div class="tab-content" id="tab-2">
+    <div class="trace-shell">
+      <div class="trace-header">
+        <div class="trace-title">AI Decision Audit Trail — LangSmith Trace Viewer</div>
+        <div class="trace-id">KYC-28741 · Jan de Vries · 07 Jun 2024 14:24:11 CET</div>
+      </div>
+      <div class="trace-grid">
+        <div class="trace-agent">
+          <div class="trace-agent-header" style="background:rgba(13,148,136,0.1);">
+            <div class="trace-agent-name"><div class="trace-status-dot dot-complete"></div>Agent 1 — Document Ingestion</div>
+            <div class="trace-score">0.94</div>
+          </div>
+          <div class="trace-body">
+            <div class="trace-line"><div class="trace-key">Input</div><div class="trace-val">Passport NL — 2 pages (front + biometric) · SHA-256: a4f2e1c9...</div></div>
+            <div class="trace-line"><div class="trace-key">Extracted Fields</div><div class="trace-val">Name: Jan de Vries ✓ · DOB: 14-03-1971 ✓ · Exp: 2027-08-22 ✓ · MRZ: matched ✓</div></div>
+            <div class="trace-line"><div class="trace-key">Reasoning</div>
+              <div class="trace-reasoning"># Agent 1 reasoning trace
+fields_extracted: 8/8
+mrz_cross_check: PASS
+liveness_score: 0.97
+confidence_per_field:
+  name: 0.99 | dob: 0.98
+  address: 0.96 | expiry: 0.99
+<span class="trace-comment"># All fields above threshold (0.90)</span>
+decision: PASS → Agent 2</div>
+            </div>
+          </div>
+        </div>
+        <div class="trace-agent">
+          <div class="trace-agent-header" style="background:rgba(13,148,136,0.1);">
+            <div class="trace-agent-name"><div class="trace-status-dot dot-complete"></div>Agent 2 — Identity Verification</div>
+            <div class="trace-score">0.91</div>
+          </div>
+          <div class="trace-body">
+            <div class="trace-line"><div class="trace-key">Input</div><div class="trace-val">Structured record from Agent 1 · Cross-reference: BRP (NL population register)</div></div>
+            <div class="trace-line"><div class="trace-key">Verification Result</div><div class="trace-val">BRP match: ✓ · Address match: ✓ · DOB match: ✓ · No discrepancies</div></div>
+            <div class="trace-line"><div class="trace-key">Reasoning</div>
+              <div class="trace-reasoning"># Agent 2 reasoning trace
+brp_lookup: MATCH (confidence: 0.99)
+address_verified: PASS
+date_of_birth: CONFIRMED
+discrepancies_found: 0
+<span class="trace-comment"># Identity verified. No flags.</span>
+decision: PASS → Agent 3</div>
+            </div>
+          </div>
+        </div>
+        <div class="trace-agent" style="border-color:rgba(217,119,6,0.4);">
+          <div class="trace-agent-header" style="background:rgba(217,119,6,0.1);">
+            <div class="trace-agent-name"><div class="trace-status-dot dot-escalated"></div>Agent 3 — AML / Risk Scoring</div>
+            <div class="trace-score warn">0.61 ⚠</div>
+          </div>
+          <div class="trace-body">
+            <div class="trace-line"><div class="trace-key">Input</div><div class="trace-val">Verified identity record · PEP database (OFAC, EU consolidated, WorldCheck) · Sanctions list</div></div>
+            <div class="trace-line"><div class="trace-key">PEP Check Result</div><div class="trace-val" style="color:#FCD34D;">Possible match: Jan de Vries (Rotterdam, retired official 2009–2015) · Similarity: 0.61</div></div>
+            <div class="trace-line"><div class="trace-key">Reasoning</div>
+              <div class="trace-reasoning"># Agent 3 reasoning trace
+sanctions_check: CLEAR (0 matches)
+pep_name_match: POSSIBLE
+  matched_entry: "Jan de Vries"
+  role: "Municipal official, Rotterdam"
+  period: "2009-2015" (retired)
+  name_similarity: 0.61
+  threshold: 0.80
+<span class="trace-comment"># Below auto-approve threshold.</span>
+<span class="trace-comment"># Analyst verification required.</span>
+risk_score: AMBER (0.61)
+decision: ESCALATE → HITL</div>
+            </div>
+          </div>
+        </div>
+        <div class="trace-agent">
+          <div class="trace-agent-header" style="background:rgba(99,102,241,0.1);">
+            <div class="trace-agent-name"><div class="trace-status-dot" style="background:var(--purple2);"></div>Orchestrator — Final Decision</div>
+            <div class="trace-score" style="font-size:14px;color:var(--purple2);">ESCALATED</div>
+          </div>
+          <div class="trace-body">
+            <div class="trace-line"><div class="trace-key">Confidence Aggregate</div><div class="trace-val">Agent 1: 0.94 · Agent 2: 0.91 · Agent 3: 0.61 → Min: 0.61</div></div>
+            <div class="trace-line"><div class="trace-key">Decision Logic</div><div class="trace-val">Min confidence (0.61) below auto-approve threshold (0.80). Single flag: possible PEP match. No hard-rule triggers (no sanctions hit, no document fraud).</div></div>
+            <div class="trace-line"><div class="trace-key">EU AI Act Art. 12 Record</div>
+              <div class="trace-reasoning"># Audit record — immutable
+record_id: AUD-2024-28741
+timestamp: 2024-06-07T14:24:11Z
+applicant_hash: a4f2e1c9...
+decision: ESCALATE_HITL
+confidence_min: 0.61
+trigger: PEP_POSSIBLE_MATCH
+regulation_ref: AML_VI_Art4
+retention_until: 2031-06-07
+analyst_required: true</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="trace-decision">
+        <div class="trace-decision-label">⚠ Orchestrator Escalation Rationale — Sent to Analyst Queue</div>
+        <div class="trace-decision-text">Application KYC-28741 escalated to human review. Reason: Possible PEP match on Agent 3 (confidence 0.61, threshold 0.80). Identity verification passed. Document extraction passed. Analyst is asked to verify whether applicant Jan de Vries (DOB 14-03-1971, NL) is the same individual as the PEP register entry (retired municipal official, Rotterdam, 2009–2015). If different person, approve. If same person, follow enhanced due diligence procedure per AML VI Article 20.</div>
+      </div>
+    </div>
+    <div class="caption-bar">
+      <div class="caption-text"><strong>Design rationale:</strong> This is the EU AI Act Article 12 audit trail in action. Every agent decision — including the reasoning chain, confidence scores, and regulatory references — is logged immutably and retrievable by application ID. This is what allowed the risk committee to approve the system: they could see exactly what the AI decided and why for any application, seven years from now.</div>
+      <div class="caption-tools"><span class="tool-tag">LangSmith</span><span class="tool-tag">LangGraph</span><span class="tool-tag">EU AI Act Art.12</span></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRD — Autonomous KYC Onboarding Agent</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+  :root {
+    --navy: #0f172a; --navy2: #1e293b; --navy3: #334155;
+    --accent: #6366f1; --accent2: #818cf8; --accent3: #c7d2fe;
+    --teal: #0d9488; --gold: #d97706; --red: #dc2626; --green: #16a34a;
+    --bg: #f8fafc; --white: #ffffff;
+    --text: #0f172a; --text2: #475569; --text3: #94a3b8;
+    --border: #e2e8f0; --border2: #cbd5e1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 14px; }
+  .page { max-width: 900px; margin: 0 auto; background: var(--white); box-shadow: 0 0 60px rgba(0,0,0,0.08); }
+
+  /* COVER */
+  .cover { background: var(--navy); color: white; padding: 60px 64px 50px; position: relative; overflow: hidden; }
+  .cover::before { content: ''; position: absolute; top: -80px; right: -80px; width: 300px; height: 300px; border-radius: 50%; background: rgba(99,102,241,0.15); }
+  .cover::after { content: ''; position: absolute; bottom: -40px; left: 100px; width: 200px; height: 200px; border-radius: 50%; background: rgba(13,148,136,0.1); }
+  .cover-meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; color: #818cf8; text-transform: uppercase; margin-bottom: 20px; }
+  .cover h1 { font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 12px; position: relative; z-index: 1; }
+  .cover h1 span { color: #818cf8; }
+  .cover-sub { font-size: 15px; color: #94a3b8; margin-bottom: 36px; max-width: 500px; line-height: 1.6; }
+  .cover-chips { display: flex; gap: 10px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+  .chip-blue { background: rgba(99,102,241,0.2); color: #818cf8; border: 1px solid rgba(99,102,241,0.3); }
+  .chip-teal { background: rgba(13,148,136,0.2); color: #2dd4bf; border: 1px solid rgba(13,148,136,0.3); }
+  .chip-gold { background: rgba(217,119,6,0.2); color: #fbbf24; border: 1px solid rgba(217,119,6,0.3); }
+  .cover-info { margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; position: relative; z-index: 1; }
+  .cover-info-item { }
+  .cover-info-label { font-size: 10px; color: #64748b; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .cover-info-val { font-size: 13px; color: #e2e8f0; font-weight: 500; }
+
+  /* BODY */
+  .body { padding: 0 64px 64px; }
+
+  /* TOC */
+  .toc { padding: 36px 0 28px; border-bottom: 2px solid var(--border); }
+  .toc-title { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 16px; }
+  .toc-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 40px; }
+  .toc-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text2); }
+  .toc-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); min-width: 20px; }
+
+  /* SECTIONS */
+  .section { padding-top: 40px; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); background: var(--accent3); padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+  .section-title { font-size: 18px; font-weight: 700; color: var(--navy); }
+  h3 { font-size: 13px; font-weight: 600; color: var(--navy); margin: 20px 0 8px; }
+  p { color: var(--text2); margin-bottom: 10px; font-size: 13px; line-height: 1.75; }
+  ul, ol { margin-left: 18px; margin-bottom: 10px; }
+  li { color: var(--text2); font-size: 13px; line-height: 1.8; margin-bottom: 2px; }
+
+  /* CALLOUTS */
+  .callout { border-radius: 8px; padding: 14px 18px; margin: 16px 0; border-left: 3px solid; }
+  .callout-blue { background: #eff6ff; border-color: var(--accent); }
+  .callout-blue strong { color: var(--accent); }
+  .callout-teal { background: #f0fdfa; border-color: var(--teal); }
+  .callout-teal strong { color: var(--teal); }
+  .callout-gold { background: #fffbeb; border-color: var(--gold); }
+  .callout-gold strong { color: var(--gold); }
+  .callout-red { background: #fef2f2; border-color: var(--red); }
+  .callout-red strong { color: var(--red); }
+  .callout p { margin: 0; font-size: 12.5px; }
+
+  /* TABLES */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 12px; }
+  th { background: var(--navy); color: white; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 11px; letter-spacing: 0.04em; }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--bg); }
+
+  /* STATUS BADGES */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.04em; }
+  .badge-green { background: #dcfce7; color: #15803d; }
+  .badge-yellow { background: #fef9c3; color: #854d0e; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+  .badge-blue { background: #eff6ff; color: #1d4ed8; }
+  .badge-gray { background: #f1f5f9; color: #475569; }
+  .badge-purple { background: #f5f3ff; color: #6d28d9; }
+
+  /* PRIORITY MATRIX */
+  .matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 16px 0; }
+  .matrix-cell { background: white; padding: 16px; }
+  .matrix-cell.highlight { background: #eff6ff; }
+  .matrix-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+  .matrix-items { display: flex; flex-direction: column; gap: 4px; }
+  .matrix-item { font-size: 11.5px; color: var(--text2); padding-left: 10px; position: relative; }
+  .matrix-item::before { content: '—'; position: absolute; left: 0; color: var(--text3); }
+
+  /* USER STORY */
+  .story { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-bottom: 10px; }
+  .story-id { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); margin-bottom: 4px; }
+  .story-text { font-size: 12.5px; color: var(--text); font-weight: 500; margin-bottom: 6px; }
+  .story-ac { font-size: 11.5px; color: var(--text2); }
+  .story-ac strong { color: var(--navy3); }
+
+  /* METRICS */
+  .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+  .metric-card { background: var(--navy); color: white; border-radius: 10px; padding: 16px; text-align: center; }
+  .metric-val { font-size: 28px; font-weight: 700; color: #818cf8; line-height: 1; margin-bottom: 4px; }
+  .metric-label { font-size: 10px; color: #94a3b8; letter-spacing: 0.04em; }
+
+  /* TIMELINE */
+  .sprint-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px 0; }
+  .sprint-card { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .sprint-header { background: var(--navy); color: white; padding: 8px 12px; font-size: 11px; font-weight: 600; }
+  .sprint-header.done { background: var(--teal); }
+  .sprint-header.active { background: var(--accent); }
+  .sprint-body { padding: 10px 12px; }
+  .sprint-body li { font-size: 10.5px; color: var(--text2); margin-bottom: 2px; }
+
+  /* FOOTER */
+  .doc-footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .doc-footer-text { font-size: 10px; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+
+  /* PAGE BREAK SIMULATION */
+  .page-break { height: 40px; border-bottom: 1px dashed var(--border); margin: 40px 0; display: flex; align-items: center; justify-content: center; }
+  .page-break span { font-size: 10px; color: var(--text3); background: white; padding: 0 12px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-meta">Product Requirements Document · Confidential · v2.3</div>
+  <h1>Autonomous Multi-Agent<br><span>KYC Onboarding System</span></h1>
+  <p class="cover-sub">An agentic AI platform to process 10,000+ daily KYC applications autonomously — reducing onboarding time from 48 hours to 15 minutes while achieving EU AI Act Article 6 compliance.</p>
+  <div class="cover-chips">
+    <span class="chip chip-blue">EU AI Act – High Risk</span>
+    <span class="chip chip-teal">Agentic AI · LangGraph</span>
+    <span class="chip chip-gold">Tier-1 Banking · NL</span>
+  </div>
+  <div class="cover-info">
+    <div class="cover-info-item"><div class="cover-info-label">PM Owner</div><div class="cover-info-val">Krishna Agrawal</div></div>
+    <div class="cover-info-item"><div class="cover-info-label">Status</div><div class="cover-info-val">Production Pilot ✓</div></div>
+    <div class="cover-info-item"><div class="cover-info-label">Version</div><div class="cover-info-val">2.3 — Final</div></div>
+    <div class="cover-info-item"><div class="cover-info-label">Last Updated</div><div class="cover-info-val">Q2 2024</div></div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- TOC -->
+<div class="toc">
+  <div class="toc-title">Table of Contents</div>
+  <div class="toc-list">
+    <div class="toc-item"><span class="toc-num">01</span> Executive Summary</div>
+    <div class="toc-item"><span class="toc-num">06</span> Functional Requirements</div>
+    <div class="toc-item"><span class="toc-num">02</span> Problem Statement</div>
+    <div class="toc-item"><span class="toc-num">07</span> Non-Functional Requirements</div>
+    <div class="toc-item"><span class="toc-num">03</span> Goals & Success Metrics</div>
+    <div class="toc-item"><span class="toc-num">08</span> EU AI Act Compliance</div>
+    <div class="toc-item"><span class="toc-num">04</span> Stakeholders & Users</div>
+    <div class="toc-item"><span class="toc-num">09</span> Risks & Mitigations</div>
+    <div class="toc-item"><span class="toc-num">05</span> User Stories</div>
+    <div class="toc-item"><span class="toc-num">10</span> Sprint Plan & Milestones</div>
+  </div>
+</div>
+
+<!-- S1 -->
+<div class="section">
+  <div class="section-header"><span class="section-num">01</span><h2 class="section-title">Executive Summary</h2></div>
+  <p>The KYC Onboarding Agent is an agentic AI system built on a multi-agent LangGraph architecture that autonomously processes Know Your Customer (KYC) applications for retail and SME customers at a Tier-1 Dutch bank. The system orchestrates three specialised agents — document ingestion, identity verification, and AML risk scoring — to reduce average onboarding time from 48 hours to 15 minutes while maintaining full regulatory compliance under GDPR, AML Directive V, and the EU AI Act.</p>
+  <div class="metrics-grid">
+    <div class="metric-card"><div class="metric-val">15min</div><div class="metric-label">Target onboarding time (from 48h)</div></div>
+    <div class="metric-card"><div class="metric-val">40%</div><div class="metric-label">Reduction in manual analyst effort</div></div>
+    <div class="metric-card"><div class="metric-val">10K+</div><div class="metric-label">Daily applications processed</div></div>
+  </div>
+  <div class="callout callout-teal">
+    <p><strong>Scope:</strong> This PRD covers the full product lifecycle from MVP agent design through risk-committee approval and production pilot deployment. Out of scope: international KYC flows, corporate/institutional onboarding, and integration with legacy core banking systems beyond the defined API contracts.</p>
+  </div>
+</div>
+
+<!-- S2 -->
+<div class="section">
+  <div class="section-header"><span class="section-num">02</span><h2 class="section-title">Problem Statement</h2></div>
+  <h3>Current State</h3>
+  <p>The bank's existing KYC onboarding workflow is entirely manual, requiring compliance analysts to review identity documents, cross-reference sanctions/PEP databases, and produce risk assessments for every application. At 10,000+ daily applications, this creates a structural bottleneck with three compounding problems:</p>
+  <table>
+    <tr><th>Problem</th><th>Business Impact</th><th>Root Cause</th></tr>
+    <tr><td>48-hour average onboarding time</td><td>Customer drop-off estimated at 23% during wait period</td><td>Sequential manual review with no parallel processing</td></tr>
+    <tr><td>~45 mins analyst time per application</td><td>€8.2M annual labour cost for KYC function</td><td>No automation for document extraction or risk scoring</td></tr>
+    <tr><td>Inconsistent risk decisions</td><td>3 compliance audit findings in FY23</td><td>No standardised decision logic; analyst-dependent outcomes</td></tr>
+    <tr><td>No audit trail standardisation</td><td>Regulatory risk; manual reconstruction required</td><td>Decisions captured in unstructured notes across systems</td></tr>
+  </table>
+  <h3>Why Previous Automation Attempts Failed</h3>
+  <p>Three prior automation initiatives were rejected by the bank's risk committee before this project. Root cause analysis identified three failure modes: (1) rule-based RPA that couldn't handle document variability; (2) ML models without explainability features, blocked by compliance; (3) a GenAI PoC without grounded retrieval or audit trail, generating hallucinated risk assessments.</p>
+  <div class="callout callout-gold">
+    <p><strong>Key Insight from Discovery:</strong> The fundamental barrier was not technical capability — it was the absence of a product designed to be auditable from the ground up. This PRD treats EU AI Act compliance and explainability as core product requirements, not post-launch additions.</p>
+  </div>
+</div>
+
+<!-- S3 -->
+<div class="section">
+  <div class="section-header"><span class="section-num">03</span><h2 class="section-title">Goals & Success Metrics</h2></div>
+  <h3>Primary OKRs</h3>
+  <table>
+    <tr><th>Objective</th><th>Key Result</th><th>Baseline</th><th>Target</th><th>Measurement</th></tr>
+    <tr><td>Reduce onboarding time</td><td>Average time-to-decision</td><td>48 hours</td><td>≤ 15 minutes</td><td>System timestamp delta</td></tr>
+    <tr><td>Reduce manual effort</td><td>Analyst minutes per application</td><td>45 min</td><td>≤ 27 min</td><td>Time-tracking system</td></tr>
+    <tr><td>Achieve compliance approval</td><td>Risk committee sign-off</td><td>Rejected (3x)</td><td>Approved</td><td>Governance milestone</td></tr>
+    <tr><td>Maintain decision accuracy</td><td>False negative rate (missed risk)</td><td>1.8% (manual)</td><td>≤ 1.5%</td><td>Post-decision audit sample</td></tr>
+    <tr><td>System reliability</td><td>Uptime / availability</td><td>N/A</td><td>≥ 99.5%</td><td>Infrastructure monitoring</td></tr>
+  </table>
+  <h3>Secondary Metrics (Leading Indicators)</h3>
+  <ul>
+    <li>Agent confidence score distribution: ≥ 85% of applications resolved with confidence &gt; 0.82</li>
+    <li>HITL escalation rate: ≤ 18% of applications routed to human review</li>
+    <li>Document extraction accuracy: ≥ 97% field-level accuracy on standard identity documents</li>
+    <li>Latency p95: ≤ 90 seconds for end-to-end standard application processing</li>
+  </ul>
+  <h3>Anti-Goals</h3>
+  <div class="callout callout-red">
+    <p><strong>What success does NOT mean:</strong> This product is not optimising for maximum automation rate. A 100% automation rate would be a red flag — it would mean the escalation logic is broken. The target HITL rate of 15–18% reflects genuine edge cases that require human judgment. Driving this below 10% without a corresponding reduction in missed risk would indicate the system is over-confidently auto-approving borderline cases.</p>
+  </div>
+</div>
+
+<!-- S4 -->
+<div class="section">
+  <div class="section-header"><span class="section-num">04</span><h2 class="section-title">Stakeholders & Users</h2></div>
+  <table>
+    <tr><th>Stakeholder</th><th>Role</th><th>Primary Need</th><th>Influence</th></tr>
+    <tr><td>Head of Compliance</td><td>Decision-maker / Risk Committee</td><td>Regulatory defensibility; audit trail</td><td><span class="badge badge-red">High — Veto</span></td></tr>
+    <tr><td>Chief Technology Officer</td><td>Sponsor / Budget holder</td><td>On-time delivery; infrastructure security</td><td><span class="badge badge-red">High</span></td></tr>
+    <tr><td>KYC Operations Manager</td><td>Primary end-user (analysts)</td><td>Reduced manual workload; clear escalations</td><td><span class="badge badge-yellow">Medium</span></td></tr>
+    <tr><td>Legal Counsel</td><td>Reviewer / Sign-off</td><td>GDPR compliance; liability clarity</td><td><span class="badge badge-yellow">Medium</span></td></tr>
+    <tr><td>Retail Banking Head</td><td>Business owner</td><td>Customer experience; drop-off reduction</td><td><span class="badge badge-yellow">Medium</span></td></tr>
+    <tr><td>KYC Analysts (×12)</td><td>End users — HITL reviewers</td><td>Clear escalation reasons; efficient queue UI</td><td><span class="badge badge-blue">Low-Med</span></td></tr>
+    <tr><td>Data Engineering</td><td>Internal technical partner</td><td>Stable API contracts; data quality SLAs</td><td><span class="badge badge-blue">Low-Med</span></td></tr>
+  </table>
+  <h3>Personas</h3>
+  <div class="callout callout-blue">
+    <p><strong>Persona 1 — The KYC Analyst (primary user):</strong> Maria, 34, processes 60–80 applications per day. Her frustration is not the volume — it's the repetitive extraction work on standard cases. She wants the AI to handle clear-cut cases and surface only the genuinely ambiguous ones, with a clear reason for escalation so she can make a fast, defensible decision. She is sceptical of AI systems that don't explain their reasoning.</p>
+  </div>
+  <div class="callout callout-blue">
+    <p><strong>Persona 2 — The Compliance Lead (approver):</strong> Jan, 52, has seen three AI projects fail compliance review. His concern is not whether the AI is accurate — it's whether he can explain a decision to a regulator three years from now. He needs every automated decision to have a retrievable, human-readable audit trail. He does not need to understand the model; he needs to trust the governance wrapper around it.</p>
+  </div>
+</div>
+
+<!-- S5 -->
+<div class="section">
+  <div class="section-header"><span class="section-num">05</span><h2 class="section-title">User Stories (Priority Backlog)</h2></div>
+
+  <div class="story">
+    <div class="story-id">KYC-001 · Priority: P0 · Estimate: 8 pts</div>
+    <div class="story-text">As a KYC analyst, I want the system to automatically extract all required fields from uploaded identity documents, so that I do not manually re-enter data for standard applications.</div>
+    <div class="story-ac"><strong>Acceptance Criteria:</strong> ≥97% field-level extraction accuracy on passports, national ID cards, and driving licences from NL, DE, FR, BE. Extraction confidence score displayed per field. Low-confidence fields flagged for analyst review. Processing time ≤ 8 seconds per document.</div>
+  </div>
+
+  <div class="story">
+    <div class="story-id">KYC-002 · Priority: P0 · Estimate: 13 pts</div>
+    <div class="story-text">As a compliance officer, I want every automated KYC decision to include a human-readable explanation of the factors considered and the confidence level, so that I can reconstruct the decision logic for regulatory audit.</div>
+    <div class="story-ac"><strong>Acceptance Criteria:</strong> Every decision (approve/escalate/reject) includes a structured JSON audit record with: input data hash, agent reasoning chain, confidence scores per factor, regulatory rule references cited, and timestamp. Audit records retrievable by application ID for ≥ 7 years.</div>
+  </div>
+
+  <div class="story">
+    <div class="story-id">KYC-003 · Priority: P0 · Estimate: 13 pts</div>
+    <div class="story-text">As a KYC analyst, I want the system to route unclear or high-risk applications to my review queue with a structured summary, so that I can make a fast, informed decision without starting the review from scratch.</div>
+    <div class="story-ac"><strong>Acceptance Criteria:</strong> HITL queue displays: application summary, agent confidence score, specific reason for escalation (e.g. "PEP match — confidence 0.61, threshold 0.80"), relevant document excerpts pre-highlighted, and a recommended decision with override option. Analyst review time target: ≤ 8 minutes per escalated case.</div>
+  </div>
+
+  <div class="story">
+    <div class="story-id">KYC-004 · Priority: P1 · Estimate: 8 pts</div>
+    <div class="story-text">As a Risk Officer, I want a real-time dashboard showing agent performance metrics and escalation patterns, so that I can detect model drift or unusual decision patterns before they create regulatory exposure.</div>
+    <div class="story-ac"><strong>Acceptance Criteria:</strong> Dashboard updates in near real-time (≤ 5 min lag). Shows: hourly application volume, escalation rate (with 7-day trend), confidence score distribution, top escalation reasons, and analyst override rate. Alerting threshold: escalation rate &gt; 25% triggers Slack alert to PM and compliance lead.</div>
+  </div>
+
+  <div class="story">
+    <div class="story-id">KYC-005 · Priority: P1 · Estimate: 5 pts</div>
+    <div class="story-text">As a data privacy officer, I want all PII data processed by the AI agents to remain within EU infrastructure and be deleted after the defined retention period, so that we comply with GDPR Article 17 and Article 44.</div>
+    <div class="story-ac"><strong>Acceptance Criteria:</strong> All processing on EU-region cloud infrastructure only (no data leaves EEA). Automated deletion job runs nightly for records beyond retention window. Deletion confirmed in audit log. Data residency verified in deployment checklist signed by DPO.</div>
+  </div>
+</div>
+
+<!-- S6 -->
+<div class="section">
+  <div class="section-header"><span class="section-num">06</span><h2 class="section-title">Functional Requirements</h2></div>
+  <h3>Agent Architecture</h3>
+  <table>
+    <tr><th>Agent</th><th>Responsibility</th><th>Input</th><th>Output</th><th>Technology</th></tr>
+    <tr><td><strong>Agent 1: Document Ingestion</strong></td><td>OCR, field extraction, liveness check</td><td>Raw document uploads (PDF, JPG, PNG)</td><td>Structured JSON with confidence scores</td><td>LangChain + OCR API + LLM parsing</td></tr>
+    <tr><td><strong>Agent 2: Identity Verification</strong></td><td>Cross-reference extracted data vs. databases</td><td>Structured JSON from Agent 1</td><td>Verification result + discrepancy flags</td><td>LangGraph node + internal DB APIs</td></tr>
+    <tr><td><strong>Agent 3: AML / Risk Scoring</strong></td><td>PEP/sanctions screening, risk score</td><td>Verified identity record</td><td>Risk score (0–1) + rationale</td><td>LangGraph + external sanctions feed + LLM reasoning</td></tr>
+    <tr><td><strong>Orchestrator</strong></td><td>Agent routing, confidence aggregation, HITL decision</td><td>Outputs from Agents 1–3</td><td>Final decision + audit record</td><td>LangGraph state machine + LangSmith tracing</td></tr>
+  </table>
+  <h3>HITL Escalation Logic</h3>
+  <p>Applications are auto-approved when all three agent confidence scores exceed their respective thresholds AND no hard-rule flags are triggered. Applications are escalated to HITL when any of the following conditions apply:</p>
+  <ul>
+    <li>Document extraction confidence &lt; 0.90 on any required field</li>
+    <li>Identity verification confidence &lt; 0.85</li>
+    <li>AML risk score ≥ 0.65 (amber) — auto-reject at ≥ 0.90 (red)</li>
+    <li>Any hard rule triggered (e.g. exact PEP name match, sanctions list hit)</li>
+    <li>Document expiry within 30 days</li>
+    <li>Discrepancy between document data and submitted application data &gt; 2 fields</li>
+  </ul>
+</div>
+
+<!-- S7 -->
+<div class="section">
+  <div class="section-header"><span class="section-num">07</span><h2 class="section-title">Non-Functional Requirements</h2></div>
+  <table>
+    <tr><th>Category</th><th>Requirement</th><th>Target</th><th>Measurement Method</th></tr>
+    <tr><td>Performance</td><td>End-to-end processing latency (standard app)</td><td>p95 ≤ 90 seconds</td><td>LangSmith trace timestamps</td></tr>
+    <tr><td>Performance</td><td>Document extraction latency</td><td>p99 ≤ 8 seconds</td><td>Agent 1 trace</td></tr>
+    <tr><td>Availability</td><td>System uptime</td><td>≥ 99.5% monthly</td><td>Uptime monitoring</td></tr>
+    <tr><td>Security</td><td>Data residency</td><td>EU region only (no EEA exit)</td><td>Network egress audit</td></tr>
+    <tr><td>Security</td><td>PII in logs</td><td>Zero PII in application logs</td><td>Log scanning in CI/CD pipeline</td></tr>
+    <tr><td>Scalability</td><td>Concurrent application processing</td><td>≥ 500 simultaneous</td><td>Load test at 150% capacity</td></tr>
+    <tr><td>Auditability</td><td>Decision trace retention</td><td>7 years, immutable</td><td>Audit store verification</td></tr>
+    <tr><td>Explainability</td><td>Human-readable decision rationale</td><td>100% of decisions</td><td>Automated output schema validation</td></tr>
+  </table>
+</div>
+
+<!-- S8 -->
+<div class="section">
+  <div class="section-header"><span class="section-num">08</span><h2 class="section-title">EU AI Act Compliance Requirements</h2></div>
+  <div class="callout callout-red">
+    <p><strong>Classification:</strong> This system is classified as HIGH RISK under EU AI Act Annex III (8.1 — AI systems intended to be used for the evaluation of the creditworthiness of natural persons or to establish their credit score). All requirements under Article 9–15 apply.</p>
+  </div>
+  <table>
+    <tr><th>EU AI Act Article</th><th>Requirement</th><th>Implementation in Product</th><th>Status</th></tr>
+    <tr><td>Art. 9 — Risk Management</td><td>Documented risk management system throughout lifecycle</td><td>Risk register maintained in Confluence; reviewed each sprint</td><td><span class="badge badge-green">Complete</span></td></tr>
+    <tr><td>Art. 10 — Data Governance</td><td>Training/input data quality standards documented</td><td>Data quality checklist; lineage tracked via dbt</td><td><span class="badge badge-green">Complete</span></td></tr>
+    <tr><td>Art. 11 — Technical Documentation</td><td>Full technical documentation before market placement</td><td>This PRD + architecture doc + model card</td><td><span class="badge badge-green">Complete</span></td></tr>
+    <tr><td>Art. 12 — Record Keeping</td><td>Automatic logging sufficient for post-market monitoring</td><td>LangSmith full trace logging; 7-year retention</td><td><span class="badge badge-green">Complete</span></td></tr>
+    <tr><td>Art. 13 — Transparency</td><td>Users informed they are interacting with AI</td><td>Applicant disclosure in onboarding flow</td><td><span class="badge badge-green">Complete</span></td></tr>
+    <tr><td>Art. 14 — Human Oversight</td><td>Effective human oversight measures</td><td>HITL escalation framework; override capability</td><td><span class="badge badge-green">Complete</span></td></tr>
+    <tr><td>Art. 15 — Accuracy/Robustness</td><td>Appropriate level of accuracy; resilience to errors</td><td>Confidence thresholds; fallback to full HITL on error</td><td><span class="badge badge-green">Complete</span></td></tr>
+  </table>
+</div>
+
+<!-- S9 -->
+<div class="section">
+  <div class="section-header"><span class="section-num">09</span><h2 class="section-title">Risks & Mitigations</h2></div>
+  <table>
+    <tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th><th>Owner</th></tr>
+    <tr><td>Model confidence scores miscalibrated — auto-approving risky applications</td><td><span class="badge badge-yellow">Medium</span></td><td><span class="badge badge-red">High</span></td><td>Monthly calibration review; post-audit sample of 5% auto-approvals</td><td>PM + Data Science</td></tr>
+    <tr><td>GDPR breach via PII in LLM prompt logs</td><td><span class="badge badge-blue">Low</span></td><td><span class="badge badge-red">High</span></td><td>PII scrubbing middleware before LangSmith logging; log audit in CI/CD</td><td>Engineering</td></tr>
+    <tr><td>Risk committee delays approval past pilot deadline</td><td><span class="badge badge-yellow">Medium</span></td><td><span class="badge badge-yellow">Medium</span></td><td>Bi-weekly compliance check-in; compliance lead embedded in sprint reviews</td><td>PM</td></tr>
+    <tr><td>Sanctions database latency causing p95 breach</td><td><span class="badge badge-yellow">Medium</span></td><td><span class="badge badge-yellow">Medium</span></td><td>Async screening with provisional hold; cached results for low-risk profiles</td><td>Engineering</td></tr>
+    <tr><td>Analyst resistance to AI-assisted escalation queue</td><td><span class="badge badge-yellow">Medium</span></td><td><span class="badge badge-blue">Low</span></td><td>Co-design sessions with analyst team; pilot with 2 volunteer analysts first</td><td>PM + UX</td></tr>
+  </table>
+</div>
+
+<!-- S10 -->
+<div class="section">
+  <div class="section-header"><span class="section-num">10</span><h2 class="section-title">Sprint Plan & Milestones</h2></div>
+  <div class="sprint-grid">
+    <div class="sprint-card">
+      <div class="sprint-header done">Sprint 1–2 · Discovery</div>
+      <div class="sprint-body"><ul>
+        <li>30+ stakeholder interviews</li>
+        <li>User story mapping</li>
+        <li>Compliance requirements</li>
+        <li>Risk register v1</li>
+        <li>Architecture decision log</li>
+      </ul></div>
+    </div>
+    <div class="sprint-card">
+      <div class="sprint-header done">Sprint 3–4 · Agent 1 MVP</div>
+      <div class="sprint-body"><ul>
+        <li>Document extraction pipeline</li>
+        <li>OCR integration</li>
+        <li>Confidence scoring</li>
+        <li>Field validation rules</li>
+        <li>Internal testing (100 docs)</li>
+      </ul></div>
+    </div>
+    <div class="sprint-card">
+      <div class="sprint-header done">Sprint 5–6 · Integration</div>
+      <div class="sprint-body"><ul>
+        <li>Agent 2+3 build & test</li>
+        <li>LangGraph orchestration</li>
+        <li>HITL queue UI</li>
+        <li>LangSmith tracing</li>
+        <li>Latency optimisation</li>
+      </ul></div>
+    </div>
+    <div class="sprint-card">
+      <div class="sprint-header active">Sprint 7–8 · Pilot</div>
+      <div class="sprint-body"><ul>
+        <li>Risk committee presentation</li>
+        <li>Compliance audit</li>
+        <li>500-app production pilot</li>
+        <li>Telemetry dashboard live</li>
+        <li>Post-pilot retrospective</li>
+      </ul></div>
+    </div>
+  </div>
+  <h3>Key Milestones</h3>
+  <table>
+    <tr><th>Milestone</th><th>Target Date</th><th>Status</th><th>Sign-off Required</th></tr>
+    <tr><td>PRD v1.0 approved</td><td>Week 2</td><td><span class="badge badge-green">Done</span></td><td>Head of Compliance + CTO</td></tr>
+    <tr><td>EU AI Act documentation complete</td><td>Week 6</td><td><span class="badge badge-green">Done</span></td><td>Legal Counsel + DPO</td></tr>
+    <tr><td>Agent integration test passed</td><td>Week 10</td><td><span class="badge badge-green">Done</span></td><td>Engineering Lead</td></tr>
+    <tr><td>Risk Committee presentation</td><td>Week 14</td><td><span class="badge badge-green">Approved</span></td><td>Risk Committee (7 members)</td></tr>
+    <tr><td>500-app pilot complete</td><td>Week 16</td><td><span class="badge badge-green">Done</span></td><td>PM + Compliance Lead</td></tr>
+    <tr><td>Full production launch</td><td>Week 18</td><td><span class="badge badge-blue">In Progress</span></td><td>CTO + Head of Compliance</td></tr>
+  </table>
+</div>
+
+<div class="doc-footer">
+  <span class="doc-footer-text">PRD-KYC-AGENT-v2.3 · Confidential · Krishna Agrawal · PwC Netherlands</span>
+  <span class="doc-footer-text">Approved by: Head of Compliance, CTO, DPO · Q2 2024</span>
+</div>
+
+</div><!-- /body -->
+</div><!-- /page -->
+</body>
+</html>

@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krishna Agrawal — AI Product Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #12121a;
+    --bg3: #1a1a26;
+    --surface: #1e1e2e;
+    --surface2: #252535;
+    --accent: #7c6af7;
+    --accent2: #a78bfa;
+    --accent3: #38bdf8;
+    --text: #f0eeff;
+    --text2: #b8b0e0;
+    --text3: #7a7290;
+    --border: rgba(124,106,247,0.18);
+    --border2: rgba(124,106,247,0.08);
+    --gold: #f59e0b;
+    --teal: #2dd4bf;
+    --coral: #fb7185;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border2);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent2); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent2); }
+  .nav-cta {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--accent2) 0%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--text2);
+    line-height: 1.8;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 0 0 0 rgba(124,106,247,0);
+  }
+  .btn-primary:hover {
+    background: var(--accent2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124,106,247,0.35);
+  }
+  .btn-secondary {
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent2); }
+
+  /* HERO STATS */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .stat-cell {
+    background: var(--bg2);
+    padding: 1.8rem;
+    transition: background 0.2s;
+  }
+  .stat-cell:hover { background: var(--surface); }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-num.purple { color: var(--accent2); }
+  .stat-num.teal { color: var(--teal); }
+  .stat-num.gold { color: var(--gold); }
+  .stat-num.coral { color: var(--coral); }
+  .stat-label { font-size: 0.78rem; color: var(--text3); letter-spacing: 0.04em; line-height: 1.4; }
+
+  /* GLOW ORB */
+  .hero-orb {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(124,106,247,0.12) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: pulse 6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+  }
+
+  /* SECTION SHARED */
+  section {
+    padding: 5rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.6rem;
+  }
+  .section-sub {
+    color: var(--text3);
+    font-size: 1rem;
+    max-width: 520px;
+    margin-bottom: 3rem;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+    margin: 0 4rem;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .about-text p {
+    color: var(--text2);
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+    font-size: 0.97rem;
+  }
+  .about-text strong { color: var(--text); font-weight: 500; }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .skill-pill {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.78rem;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .skill-pill:hover { border-color: var(--accent); color: var(--accent2); }
+  .skill-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* PROJECTS */
+  .projects-grid { display: flex; flex-direction: column; gap: 2px; }
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.2s;
+    cursor: pointer;
+  }
+  .project-card:hover { border-color: var(--border); transform: translateY(-2px); }
+  .project-header {
+    padding: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 2rem;
+    border-bottom: 1px solid var(--border2);
+  }
+  .project-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(124,106,247,0.12);
+    color: var(--accent2);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  .project-tag.teal { background: rgba(45,212,191,0.1); color: var(--teal); }
+  .project-tag.gold { background: rgba(245,158,11,0.1); color: var(--gold); }
+  .project-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+  }
+  .project-client {
+    font-size: 0.82rem;
+    color: var(--text3);
+    margin-bottom: 0.8rem;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  .project-summary {
+    color: var(--text2);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    max-width: 600px;
+  }
+  .project-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    min-width: 180px;
+  }
+  .metric-chip {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    text-align: right;
+  }
+  .metric-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+  .metric-val.purple { color: var(--accent2); }
+  .metric-val.teal { color: var(--teal); }
+  .metric-val.gold { color: var(--gold); }
+  .metric-label { font-size: 0.7rem; color: var(--text3); letter-spacing: 0.04em; }
+  .project-body { padding: 2.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  .project-section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 1rem;
+  }
+  .project-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .project-list li {
+    font-size: 0.88rem;
+    color: var(--text2);
+    padding-left: 1.2rem;
+    position: relative;
+    line-height: 1.6;
+  }
+  .project-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.75rem;
+    top: 0.05rem;
+  }
+  .tech-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tech-tag {
+    background: var(--surface2);
+    color: var(--text3);
+    font-size: 0.72rem;
+    font-family: 'DM Mono', monospace;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid var(--border2);
+  }
+  .impact-bar-wrap { margin-bottom: 0.8rem; }
+  .impact-bar-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.3rem;
+    font-size: 0.78rem;
+    color: var(--text2);
+  }
+  .impact-bar-track {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .impact-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(to right, var(--accent), var(--accent2));
+  }
+
+  /* APPROACH */
+  .approach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .approach-card {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .approach-card:hover { border-color: var(--border); transform: translateY(-3px); }
+  .approach-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.04em;
+  }
+  .approach-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  .approach-text { font-size: 0.85rem; color: var(--text3); line-height: 1.7; }
+
+  /* COMPETENCIES */
+  .comp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .comp-card {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 1.5rem;
+  }
+  .comp-icon { font-size: 1.3rem; margin-bottom: 0.8rem; }
+  .comp-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .comp-text { font-size: 0.78rem; color: var(--text3); line-height: 1.5; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--border2));
+  }
+  .timeline-item { position: relative; margin-bottom: 2.5rem; padding-left: 2rem; }
+  .timeline-dot {
+    position: absolute;
+    left: -2.4rem;
+    top: 0.35rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(124,106,247,0.15);
+  }
+  .timeline-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+  }
+  .timeline-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+  }
+  .timeline-company { font-size: 0.82rem; color: var(--text3); margin-bottom: 0.5rem; }
+  .timeline-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+
+  /* CONTACT */
+  .contact-section {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-section::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,106,247,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .contact-section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.8rem;
+    position: relative;
+    z-index: 1;
+  }
+  .contact-section p {
+    color: var(--text2);
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  .contact-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent2); background: rgba(124,106,247,0.07); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem 4rem;
+    color: var(--text3);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--border2);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+  }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.25s; }
+  .delay-3 { animation-delay: 0.4s; }
+  .delay-4 { animation-delay: 0.55s; }
+
+  /* SCROLL ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Krishna<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#experience">Experience</a></li>
+  </ul>
+  <a href="mailto:krishna.p.agrawal2906@gmail.com" class="nav-cta">Get in Touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-orb"></div>
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow fade-in delay-1">AI Product Manager · Amsterdam, NL</div>
+      <h1 class="fade-in delay-2">Building AI that<br>actually <em>works</em><br>in production.</h1>
+      <p class="hero-sub fade-in delay-3">12+ years shipping enterprise AI products in regulated industries. From agentic KYC pipelines to RAG-powered assistants — I bridge LLM capability with real business outcomes.</p>
+      <div class="hero-actions fade-in delay-4">
+        <a href="#projects" class="btn-primary">View Case Studies</a>
+        <a href="https://linkedin.com/in/krishnaagrawal1" target="_blank" class="btn-secondary">LinkedIn ↗</a>
+      </div>
+    </div>
+    <div class="hero-stats fade-in delay-3">
+      <div class="stat-cell">
+        <div class="stat-num purple">12+</div>
+        <div class="stat-label">Years in product &amp; engineering across EU and India</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num teal">40%</div>
+        <div class="stat-label">Reduction in manual KYC processing on first production pilot</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num gold">€1M</div>
+        <div class="stat-label">Annual operational savings delivered on data modernisation</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num coral">70%</div>
+        <div class="stat-label">Drop in agent escalations after RAG chatbot turnaround</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">About</div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <h2 class="section-title">From code to strategy —<br>the full AI stack.</h2>
+        <p>I started my career writing core banking systems at TCS and Capgemini, which gave me a rare foundation: I understand the engineering constraints that break AI projects in practice, not just in demos. That technical depth is what allows me to have credible conversations with engineers, data scientists, and the C-suite simultaneously.</p>
+        <p>After an MBA in Data Science at IE Business School, I joined PwC Netherlands to lead AI product delivery for Tier-1 financial institutions. My work sits at the intersection of <strong>agentic LLM systems, EU AI Act compliance, and measurable business impact</strong>. I believe the best AI products are invisible — they just make the work happen.</p>
+        <p>I am a Dutch citizen based in Amsterdam, available for senior AI PM, Head of AI Product, or Chief AI Officer roles in Europe or remotely.</p>
+      </div>
+      <div>
+        <p class="section-sub" style="margin-bottom:1.2rem; font-size:0.82rem; color:var(--text3); letter-spacing:0.1em; text-transform:uppercase; font-family:'DM Mono',monospace;">Core Competencies</p>
+        <div class="skills-grid">
+          <div class="skill-pill"><span class="skill-dot"></span>LLM Orchestration</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Agentic AI Systems</div>
+          <div class="skill-pill"><span class="skill-dot"></span>RAG Architecture</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Prompt Engineering</div>
+          <div class="skill-pill"><span class="skill-dot"></span>EU AI Act Compliance</div>
+          <div class="skill-pill"><span class="skill-dot"></span>GDPR &amp; Data Governance</div>
+          <div class="skill-pill"><span class="skill-dot"></span>OKR &amp; KPI Design</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Product Discovery</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Cross-functional Squads</div>
+          <div class="skill-pill"><span class="skill-dot"></span>A/B Testing</div>
+          <div class="skill-pill"><span class="skill-dot"></span>LangChain / LangGraph</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Human-in-the-Loop</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Vector Databases</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Python &amp; SQL</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Go-to-Market Execution</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Risk Committee Nav.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label">Case Studies</div>
+    <h2 class="section-title reveal">Selected AI Product Work</h2>
+    <p class="section-sub reveal">Three production deployments at regulated financial institutions — from initial discovery through post-launch telemetry.</p>
+
+    <div class="projects-grid">
+
+      <!-- PROJECT 1: AGENTIC KYC -->
+      <div class="project-card reveal" style="margin-bottom:2rem;">
+        <div class="project-header">
+          <div>
+            <div class="project-tag">Agentic AI · KYC · Banking</div>
+            <div class="project-name">Autonomous Multi-Agent KYC Onboarding</div>
+            <div class="project-client">PwC Netherlands · Tier-1 Dutch Bank · 2023–2024</div>
+            <p class="project-summary">Defined the product vision and roadmap for a production agentic system that autonomously processes over 10,000 KYC applications daily. Reduced onboarding time from 48 hours to 15 minutes while achieving EU AI Act risk-committee approval — the first agentic AI product to pass this bank's compliance board.</p>
+          </div>
+          <div class="project-metrics">
+            <div class="metric-chip">
+              <div class="metric-val purple">15min</div>
+              <div class="metric-label">Onboarding (was 48h)</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-val teal">40%</div>
+              <div class="metric-label">Manual effort reduced</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-val gold">10K+</div>
+              <div class="metric-label">Daily applications</div>
+            </div>
+          </div>
+        </div>
+        <div class="project-body">
+          <div>
+            <div class="project-section-title">What I Did</div>
+            <ul class="project-list">
+              <li>Led 30+ discovery sessions with compliance, legal, and operations to surface 200+ user stories and acceptance criteria across three agent personas (document ingestion, identity verification, risk scoring).</li>
+              <li>Mapped LLM reasoning paths to KYC regulatory decision trees (AML, PEP screening, CDD) and defined latency SLAs that governed model selection and caching strategy.</li>
+              <li>Designed the Human-in-the-Loop escalation framework: defined confidence thresholds, fallback routing logic, and analyst review queues to maintain regulatory defensibility.</li>
+              <li>Architected EU AI Act compliance guardrails (Article 6 high-risk classification) directly into the product lifecycle, producing audit trail artefacts accepted by the risk committee.</li>
+              <li>Moved the initiative from a PoC sandbox to a risk-committee-approved functional pilot across 8 sprints — owned backlog for an 8-person squad of engineers, data scientists, compliance lead, and UX researcher.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="project-section-title">Key Decisions &amp; Outcomes</div>
+            <div class="impact-bar-wrap">
+              <div class="impact-bar-label"><span>Onboarding time reduction</span><span>96%</span></div>
+              <div class="impact-bar-track"><div class="impact-bar-fill" style="width:96%"></div></div>
+            </div>
+            <div class="impact-bar-wrap">
+              <div class="impact-bar-label"><span>Manual processing reduction</span><span>40%</span></div>
+              <div class="impact-bar-track"><div class="impact-bar-fill" style="width:40%"></div></div>
+            </div>
+            <div class="impact-bar-wrap">
+              <div class="impact-bar-label"><span>Sprint completion rate</span><span>92%</span></div>
+              <div class="impact-bar-track"><div class="impact-bar-fill" style="width:92%"></div></div>
+            </div>
+            <div class="project-section-title" style="margin-top:1.5rem;">Stack &amp; Tooling</div>
+            <div class="tech-tags">
+              <span class="tech-tag">LangGraph</span>
+              <span class="tech-tag">LangSmith</span>
+              <span class="tech-tag">LangChain</span>
+              <span class="tech-tag">RAG</span>
+              <span class="tech-tag">Vector DB</span>
+              <span class="tech-tag">EU AI Act</span>
+              <span class="tech-tag">GDPR</span>
+              <span class="tech-tag">HITL Design</span>
+              <span class="tech-tag">Jira</span>
+              <span class="tech-tag">Figma</span>
+            </div>
+            <div class="project-section-title" style="margin-top:1.5rem;">The Hard Part</div>
+            <p style="font-size:0.85rem; color:var(--text2); line-height:1.7;">The toughest challenge was earning risk committee trust for an autonomous system in a high-stakes regulatory environment. I solved this by framing every AI decision as auditable and reviewable — not a black box. The compliance guardrails were not added at the end; they were the product skeleton.</p>
+          </div>
+        </div>
+        <!-- DOCUMENT LINKS: PROJECT 1 -->
+        <div style="padding:1.2rem 2.5rem; border-top:1px solid var(--border2); display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap;">
+          <span style="font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text3); margin-right:0.4rem;">Project Documents</span>
+          <a href="prd-kyc.html" target="_blank" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(124,106,247,0.1);border:1px solid rgba(124,106,247,0.25);color:var(--accent2);padding:0.35rem 0.9rem;border-radius:6px;text-decoration:none;font-size:0.75rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='rgba(124,106,247,0.2)'" onmouseout="this.style.background='rgba(124,106,247,0.1)'">📋 PRD</a>
+          <a href="prototype.html" target="_blank" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(124,106,247,0.1);border:1px solid rgba(124,106,247,0.25);color:var(--accent2);padding:0.35rem 0.9rem;border-radius:6px;text-decoration:none;font-size:0.75rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='rgba(124,106,247,0.2)'" onmouseout="this.style.background='rgba(124,106,247,0.1)'">🖥 Prototype</a>
+          <a href="market-research.html" target="_blank" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(124,106,247,0.1);border:1px solid rgba(124,106,247,0.25);color:var(--accent2);padding:0.35rem 0.9rem;border-radius:6px;text-decoration:none;font-size:0.75rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='rgba(124,106,247,0.2)'" onmouseout="this.style.background='rgba(124,106,247,0.1)'">📊 Market Research</a>
+          <a href="assets/02-Product-Roadmap-Deck.pptx" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);color:var(--teal);padding:0.35rem 0.9rem;border-radius:6px;text-decoration:none;font-size:0.75rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='rgba(45,212,191,0.15)'" onmouseout="this.style.background='rgba(45,212,191,0.08)'">↓ Roadmap Deck</a>
+          <a href="assets/03-Executive-Dashboard.xlsx" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);color:var(--teal);padding:0.35rem 0.9rem;border-radius:6px;text-decoration:none;font-size:0.75rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='rgba(45,212,191,0.15)'" onmouseout="this.style.background='rgba(45,212,191,0.08)'">↓ Exec Dashboard</a>
+        </div>
+      </div>
+
+      <!-- PROJECT 2: RAG CHATBOT TURNAROUND -->
+      <div class="project-card reveal" style="margin-bottom:2rem;">
+        <div class="project-header">
+          <div>
+            <div class="project-tag teal">GenAI · RAG · Turnaround</div>
+            <div class="project-name">GenAI RAG Chatbot Turnaround</div>
+            <div class="project-client">PwC Netherlands · Financial Services Client · 2023</div>
+            <p class="project-summary">Inherited a failing GenAI product that had lost executive confidence. Diagnosed the root cause through stakeholder interviews and failure analysis, led a full pivot to a RAG architecture, and shipped a system that reduced agent escalations by 70% within six weeks of rollout.</p>
+          </div>
+          <div class="project-metrics">
+            <div class="metric-chip">
+              <div class="metric-val teal">−70%</div>
+              <div class="metric-label">Agent escalations</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-val purple">6wks</div>
+              <div class="metric-label">Time to re-launch</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-val gold">100%</div>
+              <div class="metric-label">Exec buy-in restored</div>
+            </div>
+          </div>
+        </div>
+        <div class="project-body">
+          <div>
+            <div class="project-section-title">Diagnosis &amp; Pivot</div>
+            <ul class="project-list">
+              <li>Conducted 15+ structured stakeholder interviews and analysed 3 months of session logs to identify the root failure: the original LLM was hallucinating against unverified web data rather than grounded enterprise knowledge.</li>
+              <li>Produced a written failure analysis report presented to C-suite, reframing the problem as an architecture decision, not a model capability limitation — shifting the conversation from "AI doesn't work" to "we built the wrong thing."</li>
+              <li>Designed and validated a new RAG pipeline grounded in verified internal documentation, with a retrieval evaluation framework using precision@k and MRR metrics.</li>
+              <li>Ran A/B tests across four retrieval configurations before locking the production architecture, with measurable accuracy benchmarks agreed upon with stakeholders in advance.</li>
+              <li>Defined new KPIs: agent escalation rate, CSAT per session, RAG retrieval accuracy, and model drift indicators — replacing vanity metrics that had obscured the product's problems.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="project-section-title">Post-Launch &amp; Telemetry</div>
+            <ul class="project-list">
+              <li>Deployed LangSmith-based observability pipeline monitoring retrieval accuracy, latency p95, and answer confidence scores in production.</li>
+              <li>Established a continuous prompt optimisation loop: weekly review of low-confidence sessions with a dedicated prompt engineer and domain SME.</li>
+              <li>Created a model drift detection alert (statistically significant shift in escalation rate triggers automatic Slack alert to the PM and lead engineer).</li>
+            </ul>
+            <div class="project-section-title" style="margin-top:1.5rem;">Stack &amp; Tooling</div>
+            <div class="tech-tags">
+              <span class="tech-tag">RAG</span>
+              <span class="tech-tag">LangChain</span>
+              <span class="tech-tag">LangSmith</span>
+              <span class="tech-tag">Vector DB</span>
+              <span class="tech-tag">A/B Testing</span>
+              <span class="tech-tag">Prompt Eng.</span>
+              <span class="tech-tag">Figma</span>
+              <span class="tech-tag">Productboard</span>
+            </div>
+            <div class="project-section-title" style="margin-top:1.5rem;">The Hard Part</div>
+            <p style="font-size:0.85rem; color:var(--text2); line-height:1.7;">Restoring executive confidence in a product that had already failed is harder than launching from scratch. My approach was radical transparency: every assumption, test, and result was documented and shared. Trust was rebuilt through evidence, not promises.</p>
+          </div>
+        </div>
+        <!-- DOCUMENT LINKS: PROJECT 2 -->
+        <div style="padding:1.2rem 2.5rem; border-top:1px solid var(--border2); display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap;">
+          <span style="font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text3); margin-right:0.4rem;">Project Documents</span>
+          <a href="prototype.html#rag" target="_blank" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);color:var(--teal);padding:0.35rem 0.9rem;border-radius:6px;text-decoration:none;font-size:0.75rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='rgba(45,212,191,0.15)'" onmouseout="this.style.background='rgba(45,212,191,0.08)'">🖥 Dashboard Prototype</a>
+          <a href="market-research.html" target="_blank" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(124,106,247,0.1);border:1px solid rgba(124,106,247,0.25);color:var(--accent2);padding:0.35rem 0.9rem;border-radius:6px;text-decoration:none;font-size:0.75rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='rgba(124,106,247,0.2)'" onmouseout="this.style.background='rgba(124,106,247,0.1)'">📊 Market Research</a>
+          <a href="assets/03-Executive-Dashboard.xlsx" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);color:var(--teal);padding:0.35rem 0.9rem;border-radius:6px;text-decoration:none;font-size:0.75rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='rgba(45,212,191,0.15)'" onmouseout="this.style.background='rgba(45,212,191,0.08)'">↓ Exec Dashboard</a>
+        </div>
+      </div>
+
+      <!-- PROJECT 3: DATA ESTATE / AI MATURITY -->
+      <div class="project-card reveal">
+        <div class="project-header">
+          <div>
+            <div class="project-tag gold">Strategy · Data Estate · AI Readiness</div>
+            <div class="project-name">AI Maturity Assessment &amp; Data Foundation</div>
+            <div class="project-client">PwC Netherlands · Legal Insurance Provider + Pension Fund · 2022–2023</div>
+            <p class="project-summary">Two complementary strategic engagements: halted millions of euros in misdirected AI spend at a legal insurer by delivering a board-adopted AI strategy roadmap; simultaneously directed a multi-million-euro data modernisation programme at a pension provider that unlocked LLM readiness and delivered €1M in annual operational savings.</p>
+          </div>
+          <div class="project-metrics">
+            <div class="metric-chip">
+              <div class="metric-val gold">€1M</div>
+              <div class="metric-label">Annual savings delivered</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-val purple">18mo</div>
+              <div class="metric-label">Board-adopted roadmap</div>
+            </div>
+            <div class="metric-chip">
+              <div class="metric-val teal">100%</div>
+              <div class="metric-label">AI budget redirected to ROI</div>
+            </div>
+          </div>
+        </div>
+        <div class="project-body">
+          <div>
+            <div class="project-section-title">AI Maturity Assessment (Legal Insurer)</div>
+            <ul class="project-list">
+              <li>Orchestrated a four-week AI readiness assessment spanning stakeholder workshops, data governance audits, infrastructure reviews, and prototype evaluation — across 6 business units.</li>
+              <li>Identified that 80% of proposed AI initiatives lacked the data foundation, governance infrastructure, or clear ROI to succeed — halting millions in potential sunk-cost investment in unviable prototypes.</li>
+              <li>Produced a prioritised 18-month AI roadmap with ROI projections, EU AI Act compliance checkpoints, and a phased data enablement programme, adopted as the board's official AI strategy.</li>
+              <li>Redirected 100% of the client's AI budget toward three high-confidence initiatives with defined success metrics, accelerating time-to-value from 18 months to 6.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="project-section-title">Data Estate Modernisation (Pension Provider)</div>
+            <ul class="project-list">
+              <li>Managed backlog and delivery across 4 squads consolidating legacy systems into a unified Source of Truth, defining the data contracts and governance policies required for LLM ingestion.</li>
+              <li>Defined OKRs with C-suite (CTO and CDO) and reported directly on a €3M+ programme budget across 18 months, maintaining GDPR data residency compliance throughout.</li>
+              <li>Designed the data lineage and quality monitoring framework that ensured LLM inputs were auditable and repeatable — a prerequisite for EU AI Act Article 10 compliance on data governance.</li>
+            </ul>
+            <div class="project-section-title" style="margin-top:1.5rem;">Stack &amp; Tooling</div>
+            <div class="tech-tags">
+              <span class="tech-tag">Advanced SQL</span>
+              <span class="tech-tag">Python / Pandas</span>
+              <span class="tech-tag">ETL Design</span>
+              <span class="tech-tag">Cloud Migration</span>
+              <span class="tech-tag">EU AI Act</span>
+              <span class="tech-tag">GDPR</span>
+              <span class="tech-tag">Miro</span>
+              <span class="tech-tag">Confluence</span>
+              <span class="tech-tag">Notion</span>
+            </div>
+          </div>
+        </div>
+        <!-- DOCUMENT LINKS: PROJECT 3 -->
+        <div style="padding:1.2rem 2.5rem; border-top:1px solid var(--border2); display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap;">
+          <span style="font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text3); margin-right:0.4rem;">Project Documents</span>
+          <a href="market-research.html" target="_blank" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(124,106,247,0.1);border:1px solid rgba(124,106,247,0.25);color:var(--accent2);padding:0.35rem 0.9rem;border-radius:6px;text-decoration:none;font-size:0.75rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='rgba(124,106,247,0.2)'" onmouseout="this.style.background='rgba(124,106,247,0.1)'">📊 Market Research</a>
+          <a href="assets/02-Product-Roadmap-Deck.pptx" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);color:var(--teal);padding:0.35rem 0.9rem;border-radius:6px;text-decoration:none;font-size:0.75rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='rgba(45,212,191,0.15)'" onmouseout="this.style.background='rgba(45,212,191,0.08)'">↓ Roadmap Deck</a>
+          <a href="assets/03-Executive-Dashboard.xlsx" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);color:var(--teal);padding:0.35rem 0.9rem;border-radius:6px;text-decoration:none;font-size:0.75rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='rgba(45,212,191,0.15)'" onmouseout="this.style.background='rgba(45,212,191,0.08)'">↓ Exec Dashboard</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- APPROACH -->
+<section id="approach">
+  <div class="section-inner">
+    <div class="section-label">How I Work</div>
+    <h2 class="section-title reveal">My AI Product Framework</h2>
+    <p class="section-sub reveal">Developed through repeated delivery of production AI at Tier-1 institutions. Not theory — pattern recognition from real failure modes.</p>
+    <div class="approach-grid reveal">
+      <div class="approach-card">
+        <div class="approach-num">01</div>
+        <div class="approach-title">Ground truth before architecture</div>
+        <div class="approach-text">I spend disproportionate time in discovery — stakeholder interviews, failure analysis, data audits — before touching the technical design. Most AI products fail because the problem was never properly defined, not because the model was wrong.</div>
+      </div>
+      <div class="approach-card">
+        <div class="approach-num">02</div>
+        <div class="approach-title">Compliance as product skeleton</div>
+        <div class="approach-text">In regulated environments, EU AI Act and GDPR are not post-launch checklists. I architect compliance guardrails into the product lifecycle from sprint one — this is what allows high-risk AI systems to get risk committee approval rather than dying in legal review.</div>
+      </div>
+      <div class="approach-card">
+        <div class="approach-num">03</div>
+        <div class="approach-title">Measure what the business cares about</div>
+        <div class="approach-text">I define KPIs before building. Not accuracy benchmarks for their own sake, but metrics tied to business outcomes: escalation rate, onboarding time, processing cost, user satisfaction. A model that achieves 94% accuracy on a benchmark nobody uses is not a product.</div>
+      </div>
+      <div class="approach-card">
+        <div class="approach-num">04</div>
+        <div class="approach-title">Human-in-the-loop by design</div>
+        <div class="approach-text">Autonomous AI that can't escalate gracefully is a liability, not a product. I design HITL systems where the handoff is dignified — the AI knows its confidence limits and routes accordingly, creating a defensible audit trail and a better user experience.</div>
+      </div>
+      <div class="approach-card">
+        <div class="approach-num">05</div>
+        <div class="approach-title">Ship and observe, not ship and forget</div>
+        <div class="approach-text">Post-launch telemetry is part of the product scope, not an afterthought. LLMs drift. Retrieval accuracy degrades. User behaviour shifts. I design observability pipelines and continuous feedback loops into every deployment from the start.</div>
+      </div>
+      <div class="approach-card">
+        <div class="approach-num">06</div>
+        <div class="approach-title">Translate both ways</div>
+        <div class="approach-text">My engineering background means I can prototype fast, speak precisely with data scientists, and identify technically impossible requests early. My business experience means I can translate model capabilities into board-level business cases. This bilateral fluency is rare and valuable.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label">Experience</div>
+    <h2 class="section-title reveal">Career Timeline</h2>
+    <div class="about-grid reveal">
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">Aug 2022 – Present</div>
+          <div class="timeline-role">AI Product Manager</div>
+          <div class="timeline-company">PwC Netherlands, Amsterdam</div>
+          <div class="timeline-desc">Leading end-to-end AI product delivery for Tier-1 financial institutions. Agentic KYC systems, RAG chatbots, data estate modernisation, and AI maturity strategy across banking and insurance.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">Jan 2020 – Jun 2021</div>
+          <div class="timeline-role">Independent AI &amp; Data Consultant</div>
+          <div class="timeline-company">Upwork Global, Netherlands</div>
+          <div class="timeline-desc">Freelance data and analytics engagements. Built Python-based predictive inventory engine preventing €400K in annual losses for an automotive retail client.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">Aug 2021 – Jul 2022</div>
+          <div class="timeline-role">Master's — Business Analytics &amp; Big Data</div>
+          <div class="timeline-company">IE Business School, Madrid</div>
+          <div class="timeline-desc">Specialised in ML, data strategy, and business analytics. Capstone project on NLP-driven credit risk scoring for SME lending in emerging markets.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">Nov 2015 – Oct 2019</div>
+          <div class="timeline-role">Technical Product Owner</div>
+          <div class="timeline-company">Capgemini, India</div>
+          <div class="timeline-desc">Global product lifecycle for core banking REST API services. 12-person cross-functional squad across India and Europe. 90% sprint completion rate over 3 years, 15+ downstream products across 8 countries.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">Aug 2013 – Oct 2015</div>
+          <div class="timeline-role">Software Engineer</div>
+          <div class="timeline-company">TCS, India</div>
+          <div class="timeline-desc">Core banking applications supporting 100K daily transactions. Built the technical fluency that now makes me a more effective AI product leader.</div>
+        </div>
+      </div>
+      <div>
+        <p class="section-sub" style="margin-bottom:1.5rem; font-size:0.82rem; color:var(--text3); letter-spacing:0.1em; text-transform:uppercase; font-family:'DM Mono',monospace;">Certifications</p>
+        <div style="display:flex; flex-direction:column; gap:0.6rem; margin-bottom:2.5rem;">
+          <div class="skill-pill"><span class="skill-dot"></span>Chief AI Officer Certification</div>
+          <div class="skill-pill"><span class="skill-dot"></span>LLM Mastery — Training &amp; Evaluation</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Generative AI Leader</div>
+          <div class="skill-pill"><span class="skill-dot"></span>RAG Bootcamp</div>
+          <div class="skill-pill"><span class="skill-dot"></span>Professional Scrum Product Owner (PSPO-I)</div>
+        </div>
+        <p class="section-sub" style="margin-bottom:1.5rem; font-size:0.82rem; color:var(--text3); letter-spacing:0.1em; text-transform:uppercase; font-family:'DM Mono',monospace;">Industry Focus</p>
+        <div class="comp-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="comp-card">
+            <div class="comp-title">Banking</div>
+            <div class="comp-text">KYC, AML, core banking APIs, risk scoring</div>
+          </div>
+          <div class="comp-card">
+            <div class="comp-title">Insurance</div>
+            <div class="comp-text">AI strategy, chatbots, EU AI Act compliance</div>
+          </div>
+          <div class="comp-card">
+            <div class="comp-title">Pension Funds</div>
+            <div class="comp-text">Data governance, LLM readiness, GDPR</div>
+          </div>
+          <div class="comp-card">
+            <div class="comp-title">Retail</div>
+            <div class="comp-text">Predictive analytics, demand forecasting</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section>
+  <div class="section-inner">
+    <div class="contact-section reveal">
+      <h2>Let's build something<br>that actually ships.</h2>
+      <p>Open to senior AI PM, Head of AI Product, and Chief AI Officer opportunities across Europe.<br>Also available for advisory and consulting engagements.</p>
+      <div class="contact-links">
+        <a href="mailto:krishna.p.agrawal2906@gmail.com" class="contact-link">✉ krishna.p.agrawal2906@gmail.com</a>
+        <a href="https://linkedin.com/in/krishnaagrawal1" target="_blank" class="contact-link">⬡ LinkedIn</a>
+        <a href="tel:+31683957777" class="contact-link">✆ +31 683 95 7777</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Krishna Agrawal · Amsterdam, Netherlands · Dutch Citizen · Open to opportunities across Europe</p>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.08 });
+reveals.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
